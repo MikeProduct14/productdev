@@ -1321,7 +1321,14 @@ async function submitForm() {
     if (res.ok) {
       const data = await res.json();
       console.log('Заявка создана:', data);
+      // Скрываем форму и показываем модальное окно
+      document.getElementById('contactForm').style.display = 'none';
       document.getElementById('successModal').classList.add('show');
+      // Очищаем поля формы
+      document.getElementById('nameInput').value = '';
+      document.getElementById('phoneInput').value = '';
+      document.getElementById('companyInput').value = '';
+      document.getElementById('taskInput').value = '';
       btn.textContent = originalText;
       btn.disabled = false;
     } else {
@@ -1355,7 +1362,8 @@ async function submitForm() {
 <script>
 function closeModal() {
   document.getElementById('successModal').classList.remove('show');
-  document.getElementById('contactForm').reset();
+  // Показываем форму обратно для новой заявки
+  document.getElementById('contactForm').style.display = 'flex';
 }
 
 // Закрытие по клику вне модального окна

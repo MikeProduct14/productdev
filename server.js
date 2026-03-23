@@ -61,7 +61,7 @@ app.get('/admin', (req, res) => {
 });
 
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
-  console.log(`✓ Сервер запущен: http://localhost:${PORT}`);
-  console.log(`✓ Админка: http://localhost:${PORT}/admin`);
+app.listen(PORT, '0.0.0.0', () => {
+  console.log(`✓ Сервер запущен на порту ${PORT}`);
+  console.log(`✓ Админка: /admin`);
 });

@@ -1,6 +1,15 @@
 # Vibecodify — Бекенд для сбора заявок
 
-## Установка
+## Деплой на Render (бесплатно)
+
+1. Зайдите на [render.com](https://render.com) и войдите через GitHub
+2. Нажмите **New** → **Web Service**
+3. Подключите репозиторий `MikeProduct14/productdev`
+4. Render автоматически обнаружит `render.yaml` и настроит всё
+5. Нажмите **Create Web Service**
+6. Через 2-3 минуты сайт будет доступен по адресу `https://vibecodify.onrender.com`
+
+## Локальная установка
 
 ```bash
 npm install

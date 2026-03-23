@@ -1135,7 +1135,7 @@ footer a:hover { color: var(--teal); }
           </div>
           <input type="text" id="companyInput" placeholder="Компания и сфера бизнеса">
           <textarea id="taskInput" placeholder="Кратко — какую задачу хотите решить?"></textarea>
-          <button class="form-btn" onclick="submitForm()">Отправить заявку →</button>
+          <button class="form-btn" type="button" id="submitBtn">Отправить заявку →</button>
           <p class="form-note">Отвечу в течение 2 часов в рабочее время</p>
         </div>
         <div class="form-success" id="formSuccess">
@@ -1190,6 +1190,14 @@ document.querySelectorAll('a[href^="#"]').forEach(a => {
     const t = document.querySelector(a.getAttribute('href'));
     if (t) { e.preventDefault(); t.scrollIntoView({ behavior: 'smooth' }); }
   });
+});
+
+// Обработчик формы
+document.addEventListener('DOMContentLoaded', () => {
+  const submitBtn = document.getElementById('submitBtn');
+  if (submitBtn) {
+    submitBtn.addEventListener('click', submitForm);
+  }
 });
 
 async function submitForm() {

@@ -1205,19 +1205,38 @@ async function submitForm() {
   const company = document.getElementById('companyInput').value.trim();
   const task = document.getElementById('taskInput').value.trim();
   
+  const btn = document.querySelector('.form-btn');
+  const originalText = btn.textContent;
+  btn.textContent = 'Отправка...';
+  btn.disabled = true;
+  
   try {
+    console.log('Отправка заявки:', { name, phone, company, task });
     const res = await fetch('/api/leads', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ name, phone, company, task })
     });
     
+    console.log('Ответ сервера:', res.status, res.statusText);
+    
     if (res.ok) {
+      const data = await res.json();
+      console.log('Заявка создана:', data);
       document.getElementById('contactForm').style.display = 'none';
       document.getElementById('formSuccess').style.display = 'block';
+    } else {
+      const error = await res.text();
+      console.error('Ошибка API:', error);
+      alert('Ошибка отправки: ' + res.status);
+      btn.textContent = originalText;
+      btn.disabled = false;
     }
   } catch (err) {
-    alert('Ошибка отправки. Попробуйте позже.');
+    console.error('Ошибка сети:', err);
+    alert('Ошибка отправки. Проверьте подключение к интернету.');
+    btn.textContent = originalText;
+    btn.disabled = false;
   }
 }
  

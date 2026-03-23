@@ -3,6 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
 <title>Vibecodify — Продуктовая разработка под ключ для B2B</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@600;700;800&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
@@ -1258,6 +1261,8 @@ footer a:hover { color: var(--teal); }
 
 <script>
 document.addEventListener('DOMContentLoaded', () => {
+  console.log('DOM загружен, версия: 2.0');
+  
   // Only animate if page is served over http(s), not file://
   if (location.protocol !== 'file:') {
     document.querySelectorAll('.reveal').forEach(el => el.classList.add('animated'));
@@ -1283,14 +1288,18 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Обработчик формы
   const submitBtn = document.getElementById('submitBtn');
+  console.log('Кнопка найдена:', submitBtn);
   if (submitBtn) {
-    submitBtn.addEventListener('click', submitForm);
+    submitBtn.addEventListener('click', window.submitForm);
+    console.log('Обработчик добавлен');
   } else {
     console.error('Кнопка submitBtn не найдена!');
   }
 });
 
-async function submitForm() {
+// Глобальная функция для отправки формы
+window.submitForm = async function() {
+  console.log('submitForm вызвана!');
   const name = document.getElementById('nameInput').value.trim();
   if (!name) {
     const inp = document.getElementById('nameInput');

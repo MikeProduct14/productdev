@@ -1,4 +1,4 @@
 node_modules/
-leads.db
+leads.json
 *.log
 .DS_Store

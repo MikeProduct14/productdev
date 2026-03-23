@@ -25,6 +25,16 @@ app.use(cors());
 app.use(express.json());
 app.use(express.static('.'));
 
+// Health check для Render
+app.get('/health', (req, res) => {
+  res.json({ status: 'ok' });
+});
+
+// Главная страница
+app.get('/', (req, res) => {
+  res.redirect('/vibecodify.html');
+});
+
 // API для приёма заявок
 app.post('/api/leads', (req, res) => {
   const { name, phone, company, task } = req.body;

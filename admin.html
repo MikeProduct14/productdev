@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Админка — Заявки Vibecodify</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  background: #f3f4f6; padding: 2rem;
+}
+.container { max-width: 1200px; margin: 0 auto; }
+h1 { color: #111827; margin-bottom: 1.5rem; }
+.stats {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem; margin-bottom: 2rem;
+}
+.stat-card {
+  background: white; padding: 1.5rem; border-radius: 8px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+.stat-val { font-size: 2rem; color: #2563eb; font-weight: 700; }
+.stat-label { font-size: 0.875rem; color: #6b7280; margin-top: 0.25rem; }
+.leads-table {
+  background: white; border-radius: 8px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1); overflow: hidden;
+}
+table { width: 100%; border-collapse: collapse; }
+th {
+  background: #f9fafb; padding: 1rem; text-align: left;
+  font-size: 0.875rem; font-weight: 600; color: #374151;
+  border-bottom: 1px solid #e5e7eb;
+}
+td {
+  padding: 1rem; border-bottom: 1px solid #e5e7eb;
+  font-size: 0.875rem; color: #111827;
+}
+tr:last-child td { border-bottom: none; }
+tr:hover { background: #f9fafb; }
+.empty { text-align: center; padding: 3rem; color: #9ca3af; }
+</style>
+</head>
+<body>
+<div class="container">
+  <h1>📊 Заявки Vibecodify</h1>
+  <div class="stats">
+    <div class="stat-card">
+      <div class="stat-val" id="totalLeads">0</div>
+      <div class="stat-label">Всего заявок</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-val" id="todayLeads">0</div>
+      <div class="stat-label">Сегодня</div>
+    </div>
+  </div>
+  <div class="leads-table">
+    <table>
+      <thead>
+        <tr>
+          <th>Дата</th>
+          <th>Имя</th>
+          <th>Контакт</th>
+          <th>Компания</th>
+          <th>Задача</th>
+        </tr>
+      </thead>
+      <tbody id="leadsBody">
+        <tr><td colspan="5" class="empty">Загрузка...</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+<script>
+async function loadLeads() {
+  const res = await fetch('/api/leads');
+  const leads = await res.json();
+  
+  document.getElementById('totalLeads').textContent = leads.length;
+  
+  const today = new Date().toISOString().split('T')[0];
+  const todayCount = leads.filter(l => l.created_at.startsWith(today)).length;
+  document.getElementById('todayLeads').textContent = todayCount;
+  
+  const tbody = document.getElementById('leadsBody');
+  if (leads.length === 0) {
+    tbody.innerHTML = '<tr><td colspan="5" class="empty">Заявок пока нет</td></tr>';
+    return;
+  }
+  
+  tbody.innerHTML = leads.map(lead => `
+    <tr>
+      <td>${new Date(lead.created_at).toLocaleString('ru')}</td>
+      <td><strong>${lead.name}</strong></td>
+      <td>${lead.phone || '—'}</td>
+      <td>${lead.company || '—'}</td>
+      <td>${lead.task || '—'}</td>
+    </tr>
+  `).join('');
+}
+
+loadLeads();
+setInterval(loadLeads, 30000);
+</script>
+</body>
+</html>
